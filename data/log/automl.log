@@ -1,0 +1,16 @@
+2021-02-15 08:45:41.829 - INFO - 5292 - azureml.train.automl.run._log_activity:54 - ActivityStarted: GetOutput
+2021-02-15 08:45:41.834 - INFO - 5292 - azureml.train.automl.run._log_activity:54 - ActivityStarted: GetOutput
+2021-02-15 08:45:41.850 - INFO - 5292 - azureml.train.automl.run._log_activity:54 - ActivityStarted: GetChildren
+2021-02-15 08:45:41.950 - INFO - 5292 - azureml.train.automl.run._log_activity:92 - ActivityCompleted: Activity=GetChildren, HowEnded=Success, Duration=99.41[ms]
+2021-02-15 08:45:41.950 - INFO - 5292 - azureml.train.automl.run._log_activity:92 - ActivityCompleted: Activity=GetOutput, HowEnded=Success, Duration=116.33[ms]
+2021-02-15 08:45:41.951 - INFO - 5292 - azureml.train.automl._model_download_utilities._log_activity:54 - ActivityStarted: DownloadModel
+2021-02-15 08:45:42.546 - INFO - 5292 - azureml.automl.runtime.featurization.data_transformer.__init__:184 - Feature sweeping enabled: False
+2021-02-15 08:45:42.547 - INFO - 5292 - azureml.automl.runtime.featurization.data_transformer.__init__:185 - Feature sweeping timeout: 86400
+2021-02-15 08:45:42.567 - INFO - 5292 - azureml.train.automl._model_download_utilities._log_activity:92 - ActivityCompleted: Activity=DownloadModel, HowEnded=Success, Duration=616.73[ms]
+2021-02-15 08:45:42.568 - INFO - 5292 - azureml.train.automl.run._log_activity:92 - ActivityCompleted: Activity=GetOutput, HowEnded=Success, Duration=738.87[ms]
+2021-02-15 08:49:21.896 - INFO - 5292 - azureml.train.automl.run._log_activity:54 - ActivityStarted: GetOutput
+2021-02-15 08:49:21.901 - INFO - 5292 - azureml.train.automl.run._log_activity:54 - ActivityStarted: GetOutput
+2021-02-15 08:49:21.917 - INFO - 5292 - azureml.train.automl.run._log_activity:54 - ActivityStarted: GetChildren
+2021-02-15 08:51:11.194 - INFO - 5292 - azureml.train.automl.run._log_activity:92 - ActivityCompleted: Activity=GetChildren, HowEnded=Success, Duration=109276.93[ms]
+2021-02-15 08:51:11.310 - INFO - 5292 - azureml.train.automl.run._log_activity:92 - ActivityCompleted: Activity=GetOutput, HowEnded=Success, Duration=109409.62[ms]
+2021-02-15 08:51:11.778 - INFO - 5292 - azureml.train.automl.run._log_activity:92 - ActivityCompleted: Activity=GetOutput, HowEnded=Success, Duration=109882.71[ms]
