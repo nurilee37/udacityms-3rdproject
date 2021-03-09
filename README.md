@@ -81,33 +81,38 @@ automl_config = AutoMLConfig(compute_target=compute_target,
 For more information for automl_settings and automl_config, please click [here](https://docs.microsoft.com/en-us/python/api/azureml-train-automl-client/azureml.train.automl.automlconfig.automlconfig?view=azure-ml-py#constructor).
 
 ### Results
-*TODO*: What are the results you got with your automated ML model? What were the parameters of the model? How could you have improved it?
-
-*TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
 
 The AutoML best model algorithm is VotingEnsemble which shows 0.9921 AUC weighted score among other alogorithms.
+
 ![](img/Step2_BestModel_Algorithms.png)
 
 The other metrics results for this best run is like below.
+
 ![](img/Step2_BestModel_RunID1.png)
+
 
 ![](img/Step2_BestModel_RunID2.png)
 
 Parameters for this VotingEnsemble model are like below.
+
 ![](img/Step2_BestModel_VotingEnsemble1.png)
 
 Also you can check the dashboard result.
+
 ![](img/Step2_BestModel_VotingEnsemble2.png)
 
 ![](img/Step2_BestModel_VotingEnsemble3.png)
 
 Run Details
+
 ![](img/Step2_RunDetails.png)
 
 AutoML models can be improved by adding more training data or try to add more meaningful input parameters by modifying existing parameters. Also we can try different values for automl settings and configurations.
 
 ## Hyperparameter Tuning
 *TODO*: What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
+
+
 
 
 ### Results
@@ -120,9 +125,11 @@ AutoML models can be improved by adding more training data or try to add more me
 The best model is deployed via [Azure Container Instance](https://docs.microsoft.com/en-us/azure/container-instances/container-instances-overview). You can check more details from [here](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.core.webservice.aci.aciwebservice?view=azure-ml-py).
 
 This will help to create the endpoint of the scoring url.
+
 ![](img/Step2_Endpoint_Active.png)
 
 Tested the sample 5 records from test dataset.
+
 ![](img/Step2_Endpoint_Result.png)
 
 ## Screen Recording
@@ -135,5 +142,6 @@ Tested the sample 5 records from test dataset.
 We can convert the model to [ONNX](https://docs.microsoft.com/en-us/azure/machine-learning/concept-onnx). 
 
 To enable the ONNX, from `automl_config`, `enable_onnx_compatible_models` value should be set as True. Then this can be implemented like below.
+
 ![](img/Step4_Standout_Suggestion.png)
 
