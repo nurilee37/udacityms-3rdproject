@@ -10,15 +10,24 @@ import pandas as pd
 from azureml.core.run import Run
 from azureml.data.dataset_factory import TabularDatasetFactory
 
-x = df
-y = df.pop("Clicked on Ad")
+def clean_data(data):
+
+    # Clean and one hot encode data
+    x_df = data.to_pandas_dataframe().dropna()
+    y_df = x_df.pop("STABILITY")
+    return (x_df, y_df)
+
+web_path = ['https://raw.githubusercontent.com/chamsun-imoggo/udacityms-3rdproject/main/data/hydraulic_systems_training.csv']
+
+ds = TabularDatasetFactory.from_delimited_files(path=web_path, separator=',')
+
+x, y = clean_data(ds)
 
 # TODO: Split data into train and test sets.
 ### YOUR CODE HERE ###
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.1, random_state=42)
 
 run = Run.get_context()
-
     
 def main():
     # Add arguments to script
@@ -42,3 +51,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
