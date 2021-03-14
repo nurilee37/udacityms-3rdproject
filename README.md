@@ -21,7 +21,7 @@ We can automate hyperparameter tuning by using Azure Machine Learning HyperDrive
 
 ### Overview
 
-The condition monitoring of hydraulic systems dataset comes from [UCI](https://archive.ics.uci.edu/ml/datasets/Condition+monitoring+of+hydraulic+systems). This dataset has a purpose to predict cooler condition, valve condition, internal pump leakage, hydrualic accumulator / bar pressure and stability. In this project, we will predict the stability whether the static conditions have been reached or not.
+The condition monitoring of hydraulic systems dataset comes from [UCI](https://archive.ics.uci.edu/ml/datasets/Condition+monitoring+of+hydraulic+systems). This dataset has a purpose to predict cooler condition, valve condition, internal pump leakage, hydrualic accumulator / bar pressure and stability. In this project, we will predict the stability whether the static conditions have been reached or not. This experiment can be considered to belong to the topic of Predictive Maintenance. Predictive maintenance is maintenance that monitors the performance and condition of equipments during operation to reduce the system failures. 
 
 ### Task
 
@@ -170,7 +170,7 @@ hyperdrive_run_config = HyperDriveConfig(estimator=estimator,
 
 ### Results
 
-The accuracy is 0.914 and the `--C` value is 0.967 and `--max_iter` is 100. Here, to improve the hyper drive experiment, we can add more Logistic Regression parameters or change hyper drive config parameters to produce different results.
+The accuracy is 0.914 and the `--C` value is 0.45 and `--max_iter` is 200. Here, to improve the hyper drive experiment, we can add more Logistic Regression parameters or change hyper drive config parameters to produce different results.
 
 - Best Model Run
 ![](img/Step2_Hyper_BestModel_RunID.png)
