@@ -29,23 +29,23 @@ Here, for the better analysis, I create the training and test dataset from origi
 
 The data set contains 17 sensors data like below:
 
-PS1 Pressure bar 100 Hz
-PS2 Pressure bar 100 Hz
-PS3 Pressure bar 100 Hz
-PS4 Pressure bar 100 Hz
-PS5 Pressure bar 100 Hz
-PS6 Pressure bar 100 Hz
-EPS1 Motor power W 100 Hz
-FS1 Volume flow l/min 10 Hz
-FS2 Volume flow l/min 10 Hz
-TS1 Temperature Â°C 1 Hz
-TS2 Temperature Â°C 1 Hz
-TS3 Temperature Â°C 1 Hz
-TS4 Temperature Â°C 1 Hz
-VS1 Vibration mm/s 1 Hz
-CE Cooling efficiency (virtual) % 1 Hz
-CP Cooling power (virtual) kW 1 Hz
-SE Efficiency factor % 1 Hz
+- PS1 Pressure bar 100 Hz
+- PS2 Pressure bar 100 Hz
+- PS3 Pressure bar 100 Hz
+- PS4 Pressure bar 100 Hz
+- PS5 Pressure bar 100 Hz
+- PS6 Pressure bar 100 Hz
+- EPS1 Motor power W 100 Hz
+- FS1 Volume flow l/min 10 Hz
+- FS2 Volume flow l/min 10 Hz
+- TS1 Temperature Â°C 1 Hz
+- TS2 Temperature Â°C 1 Hz
+- TS3 Temperature Â°C 1 Hz
+- TS4 Temperature Â°C 1 Hz
+- VS1 Vibration mm/s 1 Hz
+- CE Cooling efficiency (virtual) % 1 Hz
+- CP Cooling power (virtual) kW 1 Hz
+- SE Efficiency factor % 1 Hz
 
 The target values are like below and in this project, we will predict the stable flag, "STABILITY".
 
