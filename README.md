@@ -21,30 +21,59 @@ We can automate hyperparameter tuning by using Azure Machine Learning HyperDrive
 
 ### Overview
 
-The advertising dataset comes from [kaggle](https://www.kaggle.com/fayomi/advertising). This dataset has a purpose to predict whether a user clicked on Ad or not. 9 input parameters are ready to predict the behavior. 4 numerical values, 1 nlp text, 3 categorical values and 1 datetime value.
+The condition monitoring of hydraulic systems dataset comes from [UCI](https://archive.ics.uci.edu/ml/datasets/Condition+monitoring+of+hydraulic+systems). This dataset has a purpose to predict cooler condition, valve condition, internal pump leakage, hydrualic accumulator / bar pressure and stability. In this project, we will predict the stability whether the static conditions have been reached or not.
 
 ### Task
 
-Here, for the better analysis, I split the Timestamp column into Month, Date, Hour, Minute and Second parameters. I remove the Year information since all records have the same year information.
+Here, for the better analysis, I create the training and test dataset from original data. Total 2094 records of training data and 111 records of test data.
 
-As a result, there are 13 input parameters like below.
-- Daily Time Spent on Site : the total minutes of daily time spent on site (Numeric)
-- Age : the age of the user (Numeric)
-- Area Income : the area income where the user lives (Numeric)
-- Daily Internet Usage : the total minutes of daily internet time (Numeric)
-- Ad Topic Line : the nlp text of the ad topic (Text)
-- City : the city where the user lives (Categorical)
-- Male : the gender of the user (Categorical)
-- Country : the country of the user (Categorical)
-- Month : the month of the datetime value
-- Date : the date of the datetime value
-- Hour : the hour of the datetime value
-- Minute : the minute of the datetime value
-- Second : the second of the datetime value
+The data set contains 17 sensors data like below:
 
-Our target column is "Clicked on Ad". Here we will predict whether a user clicked on Ad or not based on input parameters above.
+PS1 Pressure bar 100 Hz
+PS2 Pressure bar 100 Hz
+PS3 Pressure bar 100 Hz
+PS4 Pressure bar 100 Hz
+PS5 Pressure bar 100 Hz
+PS6 Pressure bar 100 Hz
+EPS1 Motor power W 100 Hz
+FS1 Volume flow l/min 10 Hz
+FS2 Volume flow l/min 10 Hz
+TS1 Temperature Â°C 1 Hz
+TS2 Temperature Â°C 1 Hz
+TS3 Temperature Â°C 1 Hz
+TS4 Temperature Â°C 1 Hz
+VS1 Vibration mm/s 1 Hz
+CE Cooling efficiency (virtual) % 1 Hz
+CP Cooling power (virtual) kW 1 Hz
+SE Efficiency factor % 1 Hz
 
-Total 1,000 records so 950 records are used to train models and 50 records are remain as test dataset.
+The target values are like below and in this project, we will predict the stable flag, "STABILITY".
+
+1: Cooler condition / %:
+3: close to total failure
+20: reduced effifiency
+100: full efficiency
+
+2: Valve condition / %:
+100: optimal switching behavior
+90: small lag
+80: severe lag
+73: close to total failure
+
+3: Internal pump leakage:
+0: no leakage
+1: weak leakage
+2: severe leakage
+
+4: Hydraulic accumulator / bar:
+130: optimal pressure
+115: slightly reduced pressure
+100: severely reduced pressure
+90: close to total failure
+
+5: stable flag:
+0: conditions were stable
+1: static conditions might not have been reached yet
 
 ### Access
 We can access to the dataset by using a TabularDataset class of Azure ML to represent tabular data in delimited files (e.g. CSV and TSV). You can check more details from [here](https://docs.microsoft.com/en-us/python/api/azureml-core/azureml.data.dataset_factory.tabulardatasetfactory?view=azure-ml-py#from-delimited-files-path--validate-true--include-path-false--infer-column-types-true--set-column-types-none--separator------header-true--partition-format-none--support-multi-line-false--empty-as-string-false--encoding--utf8--)
@@ -58,9 +87,9 @@ For AutoML settings and configurations,
 2) automl_settings and automl_config
 ```
 automl_settings = {
-    "experiment_timeout_minutes": 20,
-    "max_concurrent_iterations": 5,
-    "primary_metric" : 'AUC_weighted'
+    "experiment_timeout_minutes": 60,
+    "max_concurrent_iterations": 20,
+    "primary_metric" : 'accuracy'
 }
 ```
 
@@ -68,7 +97,8 @@ automl_settings = {
 automl_config = AutoMLConfig(compute_target=compute_target,
                              task = "classification",
                              training_data=dataset,
-                             label_column_name="Clicked on Ad",   
+                             label_column_name="STABILITY",
+                             blocked_models=['XGBoostClassifier'],
                              path = project_folder,
                              enable_early_stopping= True,
                              featurization= 'auto',
@@ -82,43 +112,72 @@ For more information for automl_settings and automl_config, please click [here](
 
 ### Results
 
-The AutoML best model algorithm is VotingEnsemble which shows 0.9921 AUC weighted score among other alogorithms.
+The AutoML best model algorithm is VotingEnsemble which shows 0.97755 score among other alogorithms.
 
-![](img/Step2_BestModel_Algorithms.png)
+![](img/Step2_AutoML_BestModel_Algorithms.png)
 
 The other metrics results for this best run is like below.
 
-![](img/Step2_BestModel_RunID1.png)
-
-
-![](img/Step2_BestModel_RunID2.png)
-
-Parameters for this VotingEnsemble model are like below.
-
-![](img/Step2_BestModel_VotingEnsemble1.png)
-
-Also you can check the dashboard result.
-
-![](img/Step2_BestModel_VotingEnsemble2.png)
-
-![](img/Step2_BestModel_VotingEnsemble3.png)
+![](img/Step2_AutoML_BestModel_RunID.png)
 
 Run Details
 
-![](img/Step2_RunDetails.png)
+![](img/Step2_AutoML_RunDetails.png)
 
 AutoML models can be improved by adding more training data or try to add more meaningful input parameters by modifying existing parameters. Also we can try different values for automl settings and configurations.
 
 ## Hyperparameter Tuning
-*TODO*: What kind of model did you choose for this experiment and why? Give an overview of the types of parameters and their ranges used for the hyperparameter search
 
+In this project, LogisticRegression is used. Logistic regression is used to predict a certain class such as 1 or 0, yes or no. There 3 types of logistic regression. 
+1) Binary Logistic Regression
+2) Multinomial Logistic Regression
+3) Ordinal Logistic Regression.
 
+In this experiment, we will predict whether this system is stable or not so this can be the binary logistic regression experiment.
 
+For more explanation, you can refer to the [scikit learn documentation](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html).
+
+- Early termination policy
+```
+early_termination_policy = BanditPolicy(slack_factor = 0.1, evaluation_interval=1, delay_evaluation=5)
+```
+[Bandit policy](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters) is based on slack factor/slack amount and evaluation interval. Bandit ends runs when the primary metric isn't within the specified slack factor/slack amount of the most successful run.
+
+- Parameter setting
+```
+param_sampling = RandomParameterSampling( {
+        "--C": uniform(0.001, 1.0),
+        "--max_iter": choice(100,125,150,175,200)
+    }
+)
+```
+
+[Random sampling](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters) supports discrete and continuous hyperparameters. It supports early termination of low-performance runs. Some users do an initial search with random sampling and then refine the search space to improve results.
+
+In random sampling, hyperparameter values are randomly selected from the defined search space.
+
+- Hyperdrive run configuration
+```
+hyperdrive_run_config = HyperDriveConfig(estimator=estimator,
+                                hyperparameter_sampling=param_sampling,
+                                policy=early_termination_policy,
+                                primary_metric_name='Accuracy',
+                                primary_metric_goal=PrimaryMetricGoal.MAXIMIZE,
+                                max_total_runs=10)
+```
+
+[HyperDriveConfig](https://docs.microsoft.com/en-us/python/api/azureml-train-core/azureml.train.hyperdrive.hyperdriveconfig?view=azure-ml-py) includes information about hyperparameter space sampling, termination policy, primary metric, resume from configuration, estimator, and the compute target to execute the experiment runs on. 
 
 ### Results
-*TODO*: What are the results you got with your model? What were the parameters of the model? How could you have improved it?
 
-*TODO* Remeber to provide screenshots of the `RunDetails` widget as well as a screenshot of the best model trained with it's parameters.
+The accuracy is 0.914 and the `--C` value is 0.967 and `--max_iter` is 100. Here, to improve the hyper drive experiment, we can add more Logistic Regression parameters or change hyper drive config parameters to produce different results.
+
+- Best Model Run
+![](img/Step2_Hyper_BestModel_RunID.png)
+
+- Run Details
+
+![](img/Step2_Hyper_RunDetails.png)
 
 ## Model Deployment
 
@@ -133,7 +192,8 @@ Tested the sample 5 records from test dataset.
 ![](img/Step2_Endpoint_Result.png)
 
 ## Screen Recording
-*TODO* Provide a link to a screen recording of the project in action. Remember that the screencast should demonstrate:
+Click [here]() to watch the explanations
+
 - A working model
 - Demo of the deployed  model
 - Demo of a sample request sent to the endpoint and its response
@@ -144,4 +204,3 @@ We can convert the model to [ONNX](https://docs.microsoft.com/en-us/azure/machin
 To enable the ONNX, from `automl_config`, `enable_onnx_compatible_models` value should be set as True. Then this can be implemented like below.
 
 ![](img/Step4_Standout_Suggestion.png)
-
