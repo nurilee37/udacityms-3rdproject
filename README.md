@@ -192,7 +192,7 @@ Tested the sample 5 records from test dataset.
 ![](img/Step2_Endpoint_Result.png)
 
 ## Screen Recording
-Click [here]() to watch the explanations
+Click [here](https://www.youtube.com/watch?v=cfDbGIGjFdI) to watch the explanations
 
 - A working model
 - Demo of the deployed  model
