@@ -21,6 +21,10 @@ We can automate hyperparameter tuning by using Azure Machine Learning HyperDrive
 
 ### Overview
 
+In this project, we build and optimize an Azure ML pipeline using the Python SDK and a provided Scikit-learn model. This model is then compared to an Azure AutoML run. In the Azure Machine Learning Python SDK, within the machine learning workspace and relevant compute cluster, we can easily load data, pre-process data, tune hyperparameters, train models, choose the best model, register the best model and call the ML endpoint. Especially with HyperDrive, the hyperparmeter optimization can be automated and with AutoML, all the ML lifecycle can be automated.
+
+![](img/AutoML_Pipeline.png)
+
 The condition monitoring of hydraulic systems dataset comes from [UCI](https://archive.ics.uci.edu/ml/datasets/Condition+monitoring+of+hydraulic+systems). This dataset has a purpose to predict cooler condition, valve condition, internal pump leakage, hydrualic accumulator / bar pressure and stability. In this project, we will predict the stability whether the static conditions have been reached or not. This experiment can be considered to belong to the topic of Predictive Maintenance. Predictive maintenance is maintenance that monitors the performance and condition of equipments during operation to reduce the system failures. 
 
 ### Task
@@ -85,6 +89,9 @@ For AutoML settings and configurations,
 
 
 2) automl_settings and automl_config
+
+We can manage experiment timeout, max concurrent iterations so that we can manage overall experiment time. If these values are needed to be set as high values, then we can consider improve the compute cluster spec. Also the primary metric can be set as different based on the model's traits.
+
 ```
 automl_settings = {
     "experiment_timeout_minutes": 60,
@@ -92,6 +99,8 @@ automl_settings = {
     "primary_metric" : 'accuracy'
 }
 ```
+
+In the automl_config, we can define configurations for automl runs. We can set the task whether this is the classification problem or not, can block certain models and enable early stopping.
 
 ```
 automl_config = AutoMLConfig(compute_target=compute_target,
@@ -112,7 +121,7 @@ For more information for automl_settings and automl_config, please click [here](
 
 ### Results
 
-The AutoML best model algorithm is VotingEnsemble which shows 0.97755 score among other alogorithms.
+The AutoML best model algorithm is VotingEnsemble which shows about 0.9766 score among other alogorithms.
 
 ![](img/Step2_AutoML_BestModel_Algorithms.png)
 
@@ -124,7 +133,25 @@ Run Details
 
 ![](img/Step2_AutoML_RunDetails.png)
 
-AutoML models can be improved by adding more training data or try to add more meaningful input parameters by modifying existing parameters. Also we can try different values for automl settings and configurations.
+The best AutoML pipeline is VotingEnsemble and hyperparameters are automatically controlled by AutoML since AutoML does data preprocessing, model selection and hyperparameter optimization, which is the end to end automated machine learning lifecycle solution.
+
+* [VotingEnsemble](https://docs.microsoft.com/en-us/azure/machine-learning/concept-automated-ml#ensemble)
+
+Automated machine learning supports ensemble models, which are enabled by default. Ensemble learning improves machine learning results and predictive performance by combining multiple models as opposed to using single models. 
+
+VotingEnsemble predicts based on the weighted average of predicted class probabilities for classification tasks or predicted regression targets for regression tasks.
+
+AutoML selected VotingEnsemble Classifier parameters like below. You can check explanations for parameters from the [sklearn.ensemble.VotingClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.VotingClassifier.html) documentation since [PreFittedSoftVotingClassifier](https://docs.microsoft.com/en-us/python/api/azureml-automl-runtime/azureml.automl.runtime.shared.model_wrappers.prefittedsoftvotingclassifier?view=azure-ml-py) Class of Azureml is the inheritance of sklearn.ensemble._voting.VotingClassifier.
+
+```
+- weights: [0.5555555555555556,
+            0.1111111111111111,
+            0.1111111111111111,
+            0.1111111111111111,
+            0.1111111111111111]))]
+- flatten_transform : None
+- verbose : False
+```
 
 ## Hyperparameter Tuning
 
@@ -144,6 +171,9 @@ early_termination_policy = BanditPolicy(slack_factor = 0.1, evaluation_interval=
 [Bandit policy](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters) is based on slack factor/slack amount and evaluation interval. Bandit ends runs when the primary metric isn't within the specified slack factor/slack amount of the most successful run.
 
 - Parameter setting
+
+We can set `C` and `max_iter` values in the Logistic Regression model. You can explore more parameters from the [Scikit-learn Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) Documentation.
+
 ```
 param_sampling = RandomParameterSampling( {
         "--C": uniform(0.001, 1.0),
@@ -151,6 +181,10 @@ param_sampling = RandomParameterSampling( {
     }
 )
 ```
+
+`C` is the inverse of regularization strength, so small values specify stronger regularization.
+
+`max_iter` is the maximum number of iterations taken for the solvers to converge.
 
 [Random sampling](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-tune-hyperparameters) supports discrete and continuous hyperparameters. It supports early termination of low-performance runs. Some users do an initial search with random sampling and then refine the search space to improve results.
 
@@ -187,9 +221,11 @@ This will help to create the endpoint of the scoring url.
 
 ![](img/Step2_Endpoint_Active.png)
 
-Tested the sample 5 records from test dataset.
+Tested the sample json
 
 ![](img/Step2_Endpoint_Result.png)
+
+We can call the deployed machine learning service by sending sample json data to the scoring uri with valid headers. You can check the sample code from [here](https://docs.microsoft.com/en-us/azure/machine-learning/how-to-consume-web-service?tabs=python#call-the-service-python)
 
 ## Screen Recording
 Click [here](https://www.youtube.com/watch?v=cfDbGIGjFdI) to watch the explanations
@@ -197,6 +233,23 @@ Click [here](https://www.youtube.com/watch?v=cfDbGIGjFdI) to watch the explanati
 - A working model
 - Demo of the deployed  model
 - Demo of a sample request sent to the endpoint and its response
+
+## Future Improvement Suggestions
+* AutoML Experiment
+To improve the AutoML experiment result, we can try different performance metric such as AUC weighted. 
+
+Also we can remove less relevant features among 17 input parameters. Firstly, except top 10 features and exclude other 7 features which has low importance.
+
+![](img/Step2_AutoML_BestFeature.png)
+
+* HyperDrive Experiment
+Since we select the logistic regression model and tune `C` and `max_iter` values, we can try to tune other additional values such as `penalty`, `dual`, `tol`, `fit_intercept`, `intercept_scaling`, `class_weight`, `random_state`, `solver`, `verbose` and `l1_ratio`. Please refer to the [scikit learn documentation](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) for parameters explanations.
+
+Or we can try different binary classification model such as [k-Nearest Neighbors](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html), [Decision Trees](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html) and [SVM](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html).
+
+We can consider the insight from AutoML result by applying [VotingEnsemble](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.VotingClassifier.html) or [LightGBM](https://lightgbm.readthedocs.io/en/latest/pythonapi/lightgbm.LGBMClassifier.html) since they showed high performance.
+
+![](img/Step2_Future_Suggestion.png)
 
 ## Standout Suggestions
 We can convert the model to [ONNX](https://docs.microsoft.com/en-us/azure/machine-learning/concept-onnx). 
