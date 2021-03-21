@@ -204,12 +204,15 @@ hyperdrive_run_config = HyperDriveConfig(estimator=estimator,
 
 ### Results
 
+- Best Model Run
+
 The accuracy is 0.914 and the `--C` value is 0.45 and `--max_iter` is 200. Here, to improve the hyper drive experiment, we can add more Logistic Regression parameters or change hyper drive config parameters to produce different results.
 
-- Best Model Run
 ![](img/Step2_Hyper_BestModel_RunID.png)
 
 - Run Details
+
+In this run detail, we can check runId, status, accuracy score and other hyperdrive run related details.
 
 ![](img/Step2_Hyper_RunDetails.png)
 
@@ -221,7 +224,7 @@ This will help to create the endpoint of the scoring url.
 
 ![](img/Step2_Endpoint_Active.png)
 
-Tested the sample json
+Test the sample json by sending the sample json request to the scoring uri.
 
 ![](img/Step2_Endpoint_Result.png)
 
