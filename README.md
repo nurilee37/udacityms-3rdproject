@@ -1,4 +1,4 @@
-# Udacity Microsoft Azure Capstone Project
+# Udacity Microsoft Azure Capstone Project Overview
 
 This is the capstone project, the part of Udacity Azure Machine Learning Engineer Nanodegree. In this project, we will train models using AutoML and HyperDrive.
 
@@ -17,13 +17,13 @@ We can automate hyperparameter tuning by using Azure Machine Learning HyperDrive
 6) Visualize the training runs
 6) Select the best configuration for your model
 
-## Dataset
-
-### Overview
-
 In this project, we build and optimize an Azure ML pipeline using the Python SDK and a provided Scikit-learn model. This model is then compared to an Azure AutoML run. In the Azure Machine Learning Python SDK, within the machine learning workspace and relevant compute cluster, we can easily load data, pre-process data, tune hyperparameters, train models, choose the best model, register the best model and call the ML endpoint. Especially with HyperDrive, the hyperparmeter optimization can be automated and with AutoML, all the ML lifecycle can be automated.
 
 ![](img/AzureML_Pipeline.png)
+
+## Dataset
+
+### Overview
 
 The condition monitoring of hydraulic systems dataset comes from [UCI](https://archive.ics.uci.edu/ml/datasets/Condition+monitoring+of+hydraulic+systems). This dataset has a purpose to predict cooler condition, valve condition, internal pump leakage, hydrualic accumulator / bar pressure and stability. In this project, we will predict the stability whether the static conditions have been reached or not. This experiment can be considered to belong to the topic of Predictive Maintenance. Predictive maintenance is maintenance that monitors the performance and condition of equipments during operation to reduce the system failures. 
 
