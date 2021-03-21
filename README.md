@@ -23,7 +23,7 @@ We can automate hyperparameter tuning by using Azure Machine Learning HyperDrive
 
 In this project, we build and optimize an Azure ML pipeline using the Python SDK and a provided Scikit-learn model. This model is then compared to an Azure AutoML run. In the Azure Machine Learning Python SDK, within the machine learning workspace and relevant compute cluster, we can easily load data, pre-process data, tune hyperparameters, train models, choose the best model, register the best model and call the ML endpoint. Especially with HyperDrive, the hyperparmeter optimization can be automated and with AutoML, all the ML lifecycle can be automated.
 
-![](img/AutoML_Pipeline.png)
+![](img/AzureML_Pipeline.png)
 
 The condition monitoring of hydraulic systems dataset comes from [UCI](https://archive.ics.uci.edu/ml/datasets/Condition+monitoring+of+hydraulic+systems). This dataset has a purpose to predict cooler condition, valve condition, internal pump leakage, hydrualic accumulator / bar pressure and stability. In this project, we will predict the stability whether the static conditions have been reached or not. This experiment can be considered to belong to the topic of Predictive Maintenance. Predictive maintenance is maintenance that monitors the performance and condition of equipments during operation to reduce the system failures. 
 
@@ -241,6 +241,7 @@ To improve the AutoML experiment result, we can try different performance metric
 Also we can remove less relevant features among 17 input parameters. Firstly, except top 10 features and exclude other 7 features which has low importance.
 
 ![](img/Step2_AutoML_BestFeature.png)
+
 
 * HyperDrive Experiment
 Since we select the logistic regression model and tune `C` and `max_iter` values, we can try to tune other additional values such as `penalty`, `dual`, `tol`, `fit_intercept`, `intercept_scaling`, `class_weight`, `random_state`, `solver`, `verbose` and `l1_ratio`. Please refer to the [scikit learn documentation](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) for parameters explanations.
