@@ -1,4 +1,4 @@
-# Udacity Microsoft Azure Capstone Project Overview
+# Udacity Azure Capstone Project Overview
 
 This is the capstone project, the part of Udacity Azure Machine Learning Engineer Nanodegree. In this project, we will train models using AutoML and HyperDrive.
 
